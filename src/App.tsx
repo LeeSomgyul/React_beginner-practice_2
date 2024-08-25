@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import Join from "./ToDoList";
+import ToDoList from "./components/ToDoList";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -64,7 +64,7 @@ function App(){
   return(
     <>
       <GlobalStyle/>
-	  <Join/>
+	  <ToDoList/>
     </>
   );
 }
