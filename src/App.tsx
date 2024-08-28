@@ -1,5 +1,9 @@
-import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
+import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+
+import {toDosState} from "./atom";
+import DraggableCard from "./components/DraggableCard";
 
 const Wrapper = styled.div`
 	display: flex;
@@ -25,18 +29,23 @@ const Board = styled.div`
 	min-height: 200px;
 `;
 
-const Card = styled.div`
-	border-radius: 5px;
-	padding: 10px 10px;
-	margin-bottom: 5px;
-	background-color: ${(props) => props.theme.cardColor};
-`;
 
-const toDos = ['a', 'b', 'c', 'd', 'e'];
+
 
 function App(){
-	const onDragEnd = () => {
-
+	const [ toDos, setToDos] = useRecoilState(toDosState);
+	//[이동하려는 대상을 놓았을 때 실행되는 함수]
+	const onDragEnd = (result: DropResult) => {
+		//draggableId(이동하는 대상), destination(이동 목적지), source(대상의 원래 위치)
+		const {draggableId, destination, source} = result;
+		//만약 동일한 위치로 드래그하거나 목적지가 없는 경우 아무것도 하지 않음
+		if(!destination) return;
+		setToDos((currentToDos) => {//setToDose에서 받는 인자는 현재 값(toDos)을 불러온다
+			const toDos = [...currentToDos];//전체 배열 불러오기
+			toDos.splice(source.index, 1);//이동 대상을 원래 위치에서 삭제
+			toDos.splice(destination?.index, 0, draggableId);//이동 대상을 새로운 위치에 추가
+			return toDos;
+		});
 	}
 
 	return(
@@ -50,13 +59,7 @@ function App(){
 						<Board {...provided.droppableProps} ref={provided.innerRef}>
 							{/*필수: draggableId, index(정렬을 위한 순서), children*/}
 							{toDos.map((toDo, index) => (
-							<Draggable draggableId={toDo} index={index}>
-								{(provided) => (
-									<Card ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-										{toDo}
-									</Card>
-								)}
-							</Draggable>
+								<DraggableCard key={toDo} index={index} toDo={toDo}/>
 							))}
 							{provided.placeholder}
 						</Board>
