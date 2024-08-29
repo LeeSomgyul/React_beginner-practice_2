@@ -1,3 +1,4 @@
+import React from "react";
 import {Draggable} from "react-beautiful-dnd";
 import styled from "styled-components";
 
@@ -25,4 +26,5 @@ function DraggableCard({toDo, index}: IDraggableCard){
     );
 }
 
-export default DraggableCard;
+//React.memo(react에게 해당 함수가 받는 인자가 변하지 않는다면 DraggableCard를 다시 렌더링 하지 말라고 하는 것.)
+export default React.memo(DraggableCard);
