@@ -7,8 +7,7 @@ import DroppableBoard from "./components/DroppableBoard";
 
 const Wrapper = styled.div`
 	display: flex;
-	max-width: 680px;
-	width: 100%;
+	width: 100vw;
 	margin: 0 auto;
 	justify-content: center;
 	align-items: center;
@@ -16,10 +15,11 @@ const Wrapper = styled.div`
 `;
 
 const Boards = styled.div`
-	display: grid;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
 	width: 100%;
 	gap: 10px;
-	grid-template-columns: repeat(3, 1fr);
 `;
 
 
@@ -34,9 +34,10 @@ function App(){
 		//2. 이동 대상의 출발 Board와 목적지 Board가 같은 경우
 		if(source.droppableId === destination?.droppableId){
 			setToDos((allBoards) => {
-				const boardCopy = [...allBoards[source.droppableId]];
+				const boardCopy = [...allBoards[source.droppableId]];//ex) "To_Do"의 [{id:1, text:"hello"}, {id:2, text:"bye"}]
+				const taskObj = boardCopy[source.index];//ex) index=0 이라면 [{id:1, text:"hello"}, {id:2, text:"bye"}]의 {id:1, text:"hello"}
 				boardCopy.splice(source.index, 1);
-				boardCopy.splice(destination?.index, 0, draggableId);
+				boardCopy.splice(destination?.index, 0, taskObj);
 				return{
 					...allBoards,
 					[source.droppableId]: boardCopy,
@@ -47,9 +48,10 @@ function App(){
 		if(source.droppableId !== destination?.droppableId){
 			setToDos((allBoards) => {
 				const sourceBoardCopy = [...allBoards[source.droppableId]];
+				const sourceBoardObj = sourceBoardCopy[source.index];
 				const destinationBoardCopy = [...allBoards[destination.droppableId]];
 				sourceBoardCopy.splice(source.index, 1);
-				destinationBoardCopy.splice(destination?.index, 0, draggableId);
+				destinationBoardCopy.splice(destination?.index, 0, sourceBoardObj);
 				return{
 					...allBoards,
 					[source.droppableId]: sourceBoardCopy,

@@ -8,20 +8,21 @@ interface ICardProps{
 
 const Card = styled.div<ICardProps>`
 	border-radius: 5px;
-	padding: 10px 10px;
+	padding: 10px;
 	margin-bottom: 5px;
 	background-color: ${(props) => props.isDragging ? "#D1E9F6" : props.theme.cardColor};
-	box-shadow: ${(props) => props.isDragging ? "0px 2px 5px rgba(0,0,0,0.05" : "none"};
+	box-shadow: ${(props) => props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
 `;
 
 interface IDraggableCard {
-    toDo: string;
     index: number;
+	toDoId: number;
+	toDoText: string;
 }
 
-function DraggableCard({toDo, index}: IDraggableCard){
+function DraggableCard({index, toDoId, toDoText}: IDraggableCard){
     return (
-    <Draggable key={toDo} draggableId={toDo} index={index}>
+    <Draggable draggableId={toDoId + ""} index={index}>
 		{(provided, snapshot) => (
 			<Card
 				ref={provided.innerRef}
@@ -29,7 +30,7 @@ function DraggableCard({toDo, index}: IDraggableCard){
 				{...provided.dragHandleProps}
 				isDragging={snapshot.isDragging}
 			>
-				{toDo}
+				{toDoText}
 			</Card>
 		)}
 	</Draggable>
