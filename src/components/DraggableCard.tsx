@@ -4,13 +4,14 @@ import styled from "styled-components";
 
 interface ICardProps{
 	isDragging: boolean;
+	putUpTrash: boolean;
 }
 
 const Card = styled.div<ICardProps>`
 	border-radius: 5px;
 	padding: 10px;
 	margin-bottom: 5px;
-	background-color: ${(props) => props.isDragging ? "#D1E9F6" : props.theme.cardColor};
+	background-color: ${(props) => props.putUpTrash ? "#C80036" : props.isDragging ? "#D1E9F6" : props.theme.cardColor};
 	box-shadow: ${(props) => props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
 `;
 
@@ -18,9 +19,10 @@ interface IDraggableCard {
     index: number;
 	toDoId: number;
 	toDoText: string;
+	putUpTrash: boolean;
 }
 
-function DraggableCard({index, toDoId, toDoText}: IDraggableCard){
+function DraggableCard({index, toDoId, toDoText, putUpTrash}: IDraggableCard){
     return (
     <Draggable draggableId={toDoId + ""} index={index}>
 		{(provided, snapshot) => (
@@ -29,6 +31,7 @@ function DraggableCard({index, toDoId, toDoText}: IDraggableCard){
 				{...provided.draggableProps}
 				{...provided.dragHandleProps}
 				isDragging={snapshot.isDragging}
+				putUpTrash={putUpTrash}
 			>
 				{toDoText}
 			</Card>

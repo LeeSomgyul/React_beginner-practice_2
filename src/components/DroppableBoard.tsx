@@ -50,10 +50,11 @@ interface IForm{
 interface IBoardProps{
     toDos: IToDo[];
     boardId: string;
+    putUpTrash: boolean;
 }
 
 
-function DroppableBoard({toDos, boardId}: IBoardProps){
+function DroppableBoard({toDos, boardId, putUpTrash}: IBoardProps){
     const { register, setValue, handleSubmit } = useForm<IForm>();
     const setToDos = useSetRecoilState(toDosState);
     const onSubmit = ({toDo}: IForm) => {
@@ -88,7 +89,7 @@ function DroppableBoard({toDos, boardId}: IBoardProps){
                     >
                         {/*필수: draggableId, index(정렬을 위한 순서), children*/}
                         {toDos.map((toDo, index) => (
-                            <DraggableCard key={toDo.id} index={index} toDoId={toDo.id} toDoText={toDo.text}/>
+                            <DraggableCard key={toDo.id} index={index} toDoId={toDo.id} toDoText={toDo.text} putUpTrash={putUpTrash}/>
                         ))}
                         {provided.placeholder}
                     </Area>
