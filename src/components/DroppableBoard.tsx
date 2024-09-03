@@ -51,8 +51,14 @@ const Area = styled.div<IAreaProps>`
 
 const Form = styled.form`
     width: 100%;
+    padding: 0 10px;
     input{
         width: 100%;
+        padding: 5px;
+        border-width: 0 0 1px;
+        border-color: #3030ff;
+        margin: 5px 0px;
+        outline: none;
     }
 `;
 

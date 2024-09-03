@@ -9,10 +9,15 @@ interface ICardProps{
 
 const Card = styled.div<ICardProps>`
 	border-radius: 5px;
-	padding: 10px;
-	margin-bottom: 5px;
+	padding: 7px 5px;
+	font-size: 14px;
+	font-weight: 600;
+	margin: 5px 10px;
 	background-color: ${(props) => props.putUpTrash ? "#C80036" : props.isDragging ? "#D1E9F6" : props.theme.cardColor};
 	box-shadow: ${(props) => props.isDragging ? "0px 2px 5px rgba(0, 0, 0, 0.05)" : "none"};
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `;
 
 interface IDraggableCard {
