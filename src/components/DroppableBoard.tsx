@@ -22,11 +22,24 @@ const Board = styled.div`
     overflow: hidden;
 `;
 
-const Title = styled.h2`
-    text-align: center;
+const BoardTop = styled.div`
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+`;
+
+const Title = styled.div`
+    text-align: start;
     font-weight: 600;
-    margin-bottom: 10px;
     font-size: 18px;
+`;
+
+const BoardDelete = styled.button`
+    font-size: 15px;
+    color: #74777c;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 `;
 
 const Area = styled.div<IAreaProps>`
@@ -57,6 +70,7 @@ interface IBoardProps{
 function DroppableBoard({toDos, boardId, putUpTrash}: IBoardProps){
     const { register, setValue, handleSubmit } = useForm<IForm>();
     const setToDos = useSetRecoilState(toDosState);
+
     const onSubmit = ({toDo}: IForm) => {
         const newToDo = {
             id: Date.now(),//중복되지 않을만한 값으로 id 랜덤 생성
@@ -72,9 +86,20 @@ function DroppableBoard({toDos, boardId, putUpTrash}: IBoardProps){
         setValue("toDo", "");//input 비워주기
     };
 
+    const hancleDeleteBoard = (boardId: string) => {
+        setToDos((allToDos) => {
+            const prevToDos = {...allToDos};
+            delete prevToDos[boardId];
+            return prevToDos;
+        })
+    } 
+
     return(
         <Board>
-            <Title>{boardId}</Title>
+            <BoardTop>
+                <Title>{boardId}</Title>
+                <BoardDelete onClick={() => hancleDeleteBoard(boardId)}>X</BoardDelete>
+            </BoardTop>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <input {...register("toDo", {required: true})} type="text"  placeholder={`${boardId}에 추가할 내용을 작성해주세요.`}/>
             </Form>
